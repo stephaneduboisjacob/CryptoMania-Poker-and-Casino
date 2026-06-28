@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build output
+client/dist/
+client/android/build/
+client/android/app/build/
+client/android/.gradle/
+
+# Runtime and local configuration
+.env
+.env.*
+!.env.example
+logs/
+*.log
+*.pid
+
+# Editor and OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.claude/
+
+# Test output
+coverage/
