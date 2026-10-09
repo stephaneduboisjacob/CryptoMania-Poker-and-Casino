@@ -24,3 +24,28 @@ logs/
 
 # Test output
 coverage/
+*.zip
+
+# Android local configuration, signing material, and generated artifacts
+**/local.properties
+**/signing.properties
+**/*.jks
+**/*.keystore
+**/*.apk
+**/*.aab
+client/android/app/src/main/assets/public/
+client/android/capacitor-cordova-android-plugins/
+
+# Local agent state
+.codex/
+
+archive-images/
+new-images/
+
+# Legacy root-level artwork; current app assets live under client/public/.
+/background.png
+/background-pkr.png
+/heisenberg-lobby.png
+/heisenberg-table.png
+/table.png
+/table[2-4].png

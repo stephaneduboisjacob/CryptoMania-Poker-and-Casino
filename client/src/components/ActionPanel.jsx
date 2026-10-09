@@ -55,7 +55,7 @@ export default function ActionPanel({ gameState, myPos, onAction, myChips }) {
                 <button key={p.label}
                   onClick={() => setRaiseAmt(Math.min(Math.max(p.value, Math.min(minRaise, maxBet)), maxBet).toString())}
                   className="py-1.5 rounded-lg text-xs font-display tracking-wider uppercase transition-colors"
-                  style={{ border: '1px solid #00d4ff33', color: '#00d4ff', background: 'rgba(0,212,255,0.08)' }}>
+                  style={{ border: '1px solid #f7931a33', color: '#f7931a', background: 'rgba(247,147,26,0.08)' }}>
                   {p.label}
                 </button>
               ))}
@@ -87,7 +87,7 @@ export default function ActionPanel({ gameState, myPos, onAction, myChips }) {
         {/* Fold */}
         <button onClick={() => onAction('fold')}
           className="flex-1 py-2.5 md:py-3.5 rounded-xl font-display font-bold text-xs md:text-sm tracking-widest uppercase transition-all active:scale-95"
-          style={{ background: 'rgba(255,51,85,0.14)', border: '1px solid #ff335555', color: '#ff3355' }}>
+          style={{ background: 'rgba(239,68,68,0.14)', border: '1px solid #ef444455', color: '#ef4444' }}>
           FOLD
         </button>
 
@@ -95,13 +95,13 @@ export default function ActionPanel({ gameState, myPos, onAction, myChips }) {
         {canCheck ? (
           <button onClick={() => onAction('check')}
             className="flex-1 py-2.5 md:py-3.5 rounded-xl font-display font-bold text-xs md:text-sm tracking-widest uppercase transition-all active:scale-95"
-            style={{ background: 'rgba(0,212,255,0.14)', border: '1px solid #00d4ff55', color: '#00d4ff' }}>
+            style={{ background: 'rgba(247,147,26,0.14)', border: '1px solid #f7931a55', color: '#f7931a' }}>
             CHECK
           </button>
         ) : (
           <button onClick={() => onAction('call', callAmt)}
             className="flex-1 py-2.5 md:py-3.5 rounded-xl font-display font-bold text-xs md:text-sm tracking-widest uppercase transition-all active:scale-95"
-            style={{ background: 'rgba(0,212,255,0.14)', border: '1px solid #00d4ff55', color: '#00d4ff' }}>
+            style={{ background: 'rgba(247,147,26,0.14)', border: '1px solid #f7931a55', color: '#f7931a' }}>
             CALL
             <span className="block text-xs opacity-60 font-mono font-normal mt-0.5">
               {callAmt.toLocaleString()}
@@ -113,9 +113,9 @@ export default function ActionPanel({ gameState, myPos, onAction, myChips }) {
         <button onClick={() => canRaise && setShowRaise(r => !r)} disabled={!canRaise}
           className="flex-1 py-2.5 md:py-3.5 rounded-xl font-display font-bold text-xs md:text-sm tracking-widest uppercase transition-all active:scale-95"
           style={{
-            background: showRaise ? 'rgba(255,107,0,0.25)' : 'rgba(255,107,0,0.14)',
-            border: '1px solid #ff6b0055',
-            color: '#ff6b00',
+            background: showRaise ? 'rgba(255,176,32,0.25)' : 'rgba(255,176,32,0.14)',
+            border: '1px solid #ffb02055',
+            color: '#ffb020',
             opacity: canRaise ? 1 : 0.35,
           }}>
           {gameState.currentBet > 0 ? 'RAISE' : 'BET'}

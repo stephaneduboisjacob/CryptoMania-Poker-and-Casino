@@ -8,10 +8,10 @@ import App from './App';
 import './index.css';
 
 if (Capacitor.isNativePlatform()) {
-  axios.defaults.baseURL = 'https://poker.btcpay.exchange';
+  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || 'http://10.0.2.2:3001';
   import('@capacitor/status-bar').then(({ StatusBar, Style }) => {
-    StatusBar.setStyle({ style: Style.Dark });
-    StatusBar.setBackgroundColor({ color: '#0a0a0f' });
+    StatusBar.setStyle({ style: Style.Light });
+    StatusBar.setBackgroundColor({ color: '#08090b' });
   });
   import('@capacitor/splash-screen').then(({ SplashScreen }) => {
     SplashScreen.hide();
@@ -30,13 +30,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         position="top-right"
         toastOptions={{
           style: {
-            background: '#111120',
-            color: '#e0e0ff',
-            border: '1px solid #1e1e3a',
-            fontFamily: '"Exo 2", sans-serif',
+            background: '#141416',
+            color: '#fafafa',
+            border: '1px solid rgba(255,255,255,0.09)',
+            fontFamily: '"Inter", sans-serif',
+            borderRadius: '12px',
           },
-          success: { iconTheme: { primary: '#00ff88', secondary: '#111120' } },
-          error: { iconTheme: { primary: '#ff3355', secondary: '#111120' } },
+          success: { iconTheme: { primary: '#10b981', secondary: '#141416' } },
+          error: { iconTheme: { primary: '#ef4444', secondary: '#141416' } },
         }}
       />
     </BrowserRouter>

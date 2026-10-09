@@ -22,10 +22,10 @@ export default function Leaderboard() {
   }, []);
 
   const medalColor = (rank) => {
-    if (rank === 1) return '#ffd700';
+    if (rank === 1) return '#fbbf24';
     if (rank === 2) return '#c0c0c0';
     if (rank === 3) return '#cd7f32';
-    return '#6b6b9a';
+    return '#96897a';
   };
 
   return (
@@ -35,7 +35,7 @@ export default function Leaderboard() {
       <div className="container mx-auto px-4 py-6 max-w-3xl">
 
         <motion.div initial={{ opacity: 0, y: -15 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate('/')} className="text-heisenberg-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-heisenberg-card/60">
+          <button onClick={() => navigate('/play')} className="text-heisenberg-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-heisenberg-card/60">
             <ArrowLeft size={18} />
           </button>
           <Trophy size={24} className="text-heisenberg-gold" />
@@ -75,7 +75,7 @@ export default function Leaderboard() {
 
                   {/* Avatar */}
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center font-display font-black text-sm shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #00d4ff22, #ff6b0022)', border: '1px solid #00d4ff22' }}>
+                    style={{ background: 'linear-gradient(135deg, #f7931a22, #ffb02022)', border: '1px solid #f7931a22' }}>
                     {r.username[0].toUpperCase()}
                   </div>
 

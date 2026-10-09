@@ -28,10 +28,10 @@ export default function PreActionButtons({ gameState, myPos, onAction }) {
   const canCheck = callAmt === 0;
 
   const opts = [
-    { id: 'fold', label: 'Pre-Fold', color: '#ff3355' },
+    { id: 'fold', label: 'Pre-Fold', color: '#ef4444' },
     canCheck
-      ? { id: 'check', label: 'Pre-Check', color: '#00d4ff' }
-      : { id: 'call', label: `Pre-Call ${callAmt.toLocaleString()}`, color: '#00d4ff' },
+      ? { id: 'check', label: 'Pre-Check', color: '#f7931a' }
+      : { id: 'call', label: `Pre-Call ${callAmt.toLocaleString()}`, color: '#f7931a' },
   ];
 
   return (
@@ -43,8 +43,8 @@ export default function PreActionButtons({ gameState, myPos, onAction }) {
           className="flex-1 py-2 rounded-xl font-display font-semibold text-[10px] tracking-widest uppercase transition-all"
           style={{
             background: preAction === opt.id ? `${opt.color}22` : 'rgba(17,17,32,0.6)',
-            border: `1px solid ${preAction === opt.id ? opt.color : '#1e1e3a'}`,
-            color: preAction === opt.id ? opt.color : '#6b6b9a',
+            border: `1px solid ${preAction === opt.id ? opt.color : '#2b241a'}`,
+            color: preAction === opt.id ? opt.color : '#96897a',
           }}>
           {opt.label}
         </button>

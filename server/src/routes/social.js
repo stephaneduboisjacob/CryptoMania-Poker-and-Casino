@@ -88,16 +88,30 @@ router.post('/friends/:username/challenge', async (req, res) => {
   try {
     const target = await pool.query(`SELECT id, username FROM users WHERE LOWER(username)=LOWER($1)`, [req.params.username]);
     if (!target.rows[0]) return res.status(404).json({ error: 'User not found' });
+    const friendship = await pool.query(
+      `SELECT id FROM friends WHERE status='accepted' AND ((user_id=$1 AND friend_id=$2) OR (user_id=$2 AND friend_id=$1)) LIMIT 1`,
+      [req.user.id, target.rows[0].id]
+    );
+    if (!friendship.rows[0]) return res.status(403).json({ error: 'You can only challenge an accepted friend' });
 
     const t = await pool.query(
-      `INSERT INTO tournaments(tier,entry_fee,rake,prize_pool,status,player1_id,is_ai)
-       VALUES('play',0,0,0,'waiting',$1,false) RETURNING id`,
-      [req.user.id]
+      `INSERT INTO tournaments(tier,entry_fee,rake,prize_pool,status,player1_id,player2_id,is_ai,started_at)
+       VALUES('play',0,0,0,'active',$1,$2,false,NOW()) RETURNING id`,
+      [req.user.id, target.rows[0].id]
     );
     await pool.query(
-      `INSERT INTO game_state(tournament_id) VALUES($1)`,
+      `INSERT INTO game_state(tournament_id,blind_start_time) VALUES($1,NOW())`,
       [t.rows[0].id]
     );
+
+    const io = req.app.get('io');
+    if (io) {
+      const targetSocket = [...io.sockets.sockets.values()].find(socket => socket.username === target.rows[0].username);
+      if (targetSocket) targetSocket.emit('friendChallenge', {
+        from: req.user.username,
+        tournamentId: t.rows[0].id,
+      });
+    }
 
     res.json({ tournamentId: t.rows[0].id, challengedUser: target.rows[0].username });
   } catch (err) {

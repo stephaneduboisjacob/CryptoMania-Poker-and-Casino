@@ -74,7 +74,7 @@ export default function Friends() {
       <div className="page-scroll">
       <div className="container mx-auto px-4 py-6 max-w-3xl">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate('/')} className="text-heisenberg-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-heisenberg-card/60">
+          <button onClick={() => navigate('/play')} className="text-heisenberg-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-heisenberg-card/60">
             <ArrowLeft size={18} />
           </button>
           <h1 className="font-display text-2xl font-black tracking-widest text-heisenberg-neon">FRIENDS</h1>
@@ -106,7 +106,7 @@ export default function Friends() {
               <div className="space-y-2">
                 {requests.map(r => (
                   <div key={r.id} className="glass-card p-4 rounded-xl flex items-center justify-between"
-                    style={{ border: '1px solid #ff6b0022' }}>
+                    style={{ border: '1px solid #ffb02022' }}>
                     <div className="flex items-center gap-3">
                       <span className="text-xl">{r.avatar || '🃏'}</span>
                       <Link to={`/profile/${r.username}`} className="font-mono text-sm hover:text-heisenberg-neon transition-colors">
@@ -116,12 +116,12 @@ export default function Friends() {
                     <div className="flex gap-2">
                       <button onClick={() => accept(r.username)}
                         className="px-3 py-1.5 rounded-xl font-display text-xs tracking-widest uppercase transition-all flex items-center gap-1"
-                        style={{ background: 'rgba(0,255,136,0.12)', border: '1px solid #00ff8844', color: '#00ff88' }}>
+                        style={{ background: 'rgba(0,255,136,0.12)', border: '1px solid #22c55e44', color: '#22c55e' }}>
                         <Check size={12} /> Accept
                       </button>
                       <button onClick={() => remove(r.username)}
                         className="px-3 py-1.5 rounded-xl font-display text-xs tracking-widest uppercase transition-all"
-                        style={{ background: 'rgba(255,51,85,0.1)', border: '1px solid #ff335522', color: '#ff3355' }}>
+                        style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid #ef444422', color: '#ef4444' }}>
                         <X size={12} />
                       </button>
                     </div>
@@ -179,7 +179,7 @@ export default function Friends() {
                         <Link to={`/profile/${f.username}`} className="font-mono text-sm hover:text-heisenberg-neon transition-colors">
                           {f.username}
                         </Link>
-                        <p className="text-[10px] font-mono mt-0.5" style={{ color: on ? '#00ff88' : '#6b6b9a' }}>
+                        <p className="text-[10px] font-mono mt-0.5" style={{ color: on ? '#22c55e' : '#96897a' }}>
                           {on ? '● Online' : '○ Offline'}
                         </p>
                       </div>
@@ -188,7 +188,7 @@ export default function Friends() {
                       {on && (
                         <button onClick={() => challenge(f.username)}
                           className="px-3 py-1.5 rounded-xl font-display text-xs tracking-widest uppercase transition-all flex items-center gap-1"
-                          style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid #8b5cf644', color: '#8b5cf6' }}>
+                          style={{ background: 'rgba(96,165,250,0.15)', border: '1px solid #60a5fa44', color: '#60a5fa' }}>
                           <Swords size={12} /> Challenge
                         </button>
                       )}

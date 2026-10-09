@@ -17,7 +17,7 @@ import { Home, Wifi, WifiOff, Coffee, Clock, BellOff, MessageCircle, X } from 'l
 import { fmtUsd, btcToUsd } from '../utils/usd';
 import { sound } from '../utils/sound';
 
-const TABLE_BACKGROUNDS = ['/table.png', '/table2.png', '/table3.png', '/table4.png'];
+const TABLE_BACKGROUNDS = ['/table-hu.png', '/table-9max.png'];
 
 function backgroundForTable(tableId) {
   const hash = String(tableId || '').split('').reduce((total, char) => ((total * 31) + char.charCodeAt(0)) >>> 0, 0);
@@ -49,7 +49,7 @@ function PrizeDisplay({ prizePool, tier }) {
   return null;
 }
 
-function ChipCount({ amount, color = '#00d4ff' }) {
+function ChipCount({ amount, color = '#f7931a' }) {
   if (amount == null) return null;
   return (
     <div className="chip-count"
@@ -67,7 +67,7 @@ function TimebankBar({ seconds, max = 30, pos, label }) {
     <div className="flex items-center gap-1.5">
       <Clock size={10} className="text-heisenberg-gold shrink-0" />
       <div className="flex-1 h-1 bg-heisenberg-dark rounded-full overflow-hidden">
-        <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#ffd700' }} />
+        <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#fbbf24' }} />
       </div>
       <span className="text-[10px] font-mono text-heisenberg-gold">{seconds}s</span>
     </div>
@@ -103,7 +103,7 @@ function PlayerSeat({ name, chips, cards, isActive, isMe, bet, isDealer, avatar,
             {sitout && <span className="text-heisenberg-orange text-[10px]">Sitting out</span>}
           </div>
           <div className="player-seat__stack">
-            <ChipCount amount={chips} color={isMe ? '#5eead4' : '#fb923c'} />
+            <ChipCount amount={chips} color={isMe ? '#34d399' : '#fb923c'} />
             {bet > 0 && <span className="player-seat__bet">In front {Number(bet).toLocaleString()}</span>}
           </div>
         </div>
@@ -143,7 +143,7 @@ function ButtonDraw({ draw, players, onDone }) {
           </div>
         </div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
-          className="font-display text-sm font-bold tracking-widest" style={{ color: '#ffd700' }}>
+          className="font-display text-sm font-bold tracking-widest" style={{ color: '#fbbf24' }}>
           {draw.winner === 1 ? players.p1 : players.p2} gets the button
         </motion.p>
       </motion.div>
@@ -186,11 +186,13 @@ export default function Game() {
   const timebankRef = useRef(null);
 
   useEffect(() => {
+    let cancelled = false;
     initSound();
     const connectSocket = async () => {
-      const socketUrl = isNative() ? 'https://poker.btcpay.exchange' : '/';
+      const socketUrl = isNative() ? (import.meta.env.VITE_SOCKET_URL || 'http://10.0.2.2:3001') : '/';
       const socketOpts = { transports: ['websocket', 'polling'] };
       const token = await getToken();
+      if (cancelled) return;
       if (token) socketOpts.auth = { token };
       const sock = io(socketUrl, socketOpts);
       socketRef.current = sock;
@@ -310,7 +312,7 @@ export default function Game() {
 
     };
     connectSocket();
-    return () => { if (socketRef.current) socketRef.current.disconnect(); };
+    return () => { cancelled = true; if (socketRef.current) socketRef.current.disconnect(); };
   }, [tournamentId]);
 
   // Action timer with swipe-to-fold gesture
@@ -370,7 +372,7 @@ export default function Game() {
     }
     const isLive = tournament?.status === 'active' && gameState && !tournamentEnd;
     if (isLive) setShowExitWarning(true);
-    else navigate('/');
+    else navigate('/play');
   };
 
   const leaveWaitingTable = async () => {
@@ -383,7 +385,7 @@ export default function Game() {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.error || 'Could not cancel table');
       }
-      navigate('/');
+      navigate('/play');
     } catch (error) {
       toast.error(error.message);
     }
@@ -510,7 +512,7 @@ export default function Game() {
               <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                 className="flex justify-center">
                 <div className="flex items-center gap-3 px-4 py-2 rounded-xl"
-                  style={{ background: 'rgba(10,10,20,0.9)', border: '1px solid #ff6b0044' }}>
+                  style={{ background: 'rgba(11,10,8,0.9)', border: '1px solid #ffb02044' }}>
                   <PlayingCard card={shownCard.card} small />
                   <span className="text-heisenberg-orange text-sm font-mono">{shownCard.taunt}</span>
                 </div>
@@ -562,15 +564,15 @@ export default function Game() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   className="text-center px-8 py-4 rounded-2xl"
                   style={{
-                    background: 'rgba(10,10,15,0.95)',
-                    border: handResult.winner === myPos ? '1px solid #ffd70066' : '1px solid #1e1e3a',
-                    boxShadow: handResult.winner === myPos ? '0 0 40px #ffd70022' : 'none',
+                    background: 'rgba(11,10,8,0.95)',
+                    border: handResult.winner === myPos ? '1px solid #fbbf2466' : '1px solid #2b241a',
+                    boxShadow: handResult.winner === myPos ? '0 0 40px #fbbf2422' : 'none',
                   }}>
                   {handResult.winner === 0 ? (
                     <p className="font-display text-xl text-heisenberg-neon font-bold">SPLIT POT</p>
                   ) : handResult.winner === myPos ? (
                     <>
-                      <p className="font-display text-2xl font-black" style={{ color: '#ffd700', textShadow: '0 0 20px #ffd700' }}>
+                      <p className="font-display text-2xl font-black !text-white" style={{}}>
                         YOU WIN!
                       </p>
                       <p className="text-heisenberg-gold font-mono text-sm mt-1">+{Number(handResult.pot).toLocaleString()} chips</p>
@@ -636,7 +638,7 @@ export default function Game() {
                 </div>
                 <div className="h-1.5 bg-heisenberg-dark rounded-full overflow-hidden">
                   <div className="h-full rounded-full transition-all duration-1000"
-                    style={{ width: `${(actionTimer / 30) * 100}%`, background: actionTimer > 10 ? '#00d4ff' : '#ff3355' }} />
+                    style={{ width: `${(actionTimer / 30) * 100}%`, background: actionTimer > 10 ? '#f7931a' : '#ef4444' }} />
                 </div>
               </div>
             )}
@@ -661,9 +663,9 @@ export default function Game() {
                 <button onClick={toggleSitOut}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-display text-[10px] tracking-widest uppercase transition-all"
                   style={{
-                    background: isSittingOut ? 'rgba(255,107,0,0.18)' : 'rgba(255,255,255,0.04)',
-                    border: `1px solid ${isSittingOut ? '#ff6b0055' : '#1e1e3a'}`,
-                    color: isSittingOut ? '#ff6b00' : '#6b6b9a',
+                    background: isSittingOut ? 'rgba(255,176,32,0.18)' : 'rgba(255,255,255,0.04)',
+                    border: `1px solid ${isSittingOut ? '#ffb02055' : '#2b241a'}`,
+                    color: isSittingOut ? '#ffb020' : '#96897a',
                   }}>
                   <Coffee size={10} />
                   {isSittingOut ? "I'm Back" : 'Sit Out'}
@@ -696,7 +698,7 @@ export default function Game() {
         {/* Mobile sidebar toggle */}
         <button onClick={() => setShowSidebar(o => !o)}
           className="md:hidden fixed bottom-4 right-4 z-40 w-12 h-12 rounded-full flex items-center justify-center bg-heisenberg-card border border-heisenberg-neon/40 shadow-lg"
-          style={{ boxShadow: '0 0 15px #00d4ff22' }}>
+          style={{ boxShadow: '0 0 15px #f7931a22' }}>
           <MessageCircle size={20} className="text-heisenberg-neon" />
         </button>
 
@@ -734,7 +736,7 @@ export default function Game() {
         {friendChallenge && (
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             className="fixed top-16 right-4 z-50 glass-card p-4 rounded-xl max-w-xs"
-            style={{ border: '1px solid #8b5cf644' }}>
+            style={{ border: '1px solid #60a5fa44' }}>
             <p className="font-display text-xs tracking-widest uppercase text-heisenberg-purple mb-2">⚔️ Challenge!</p>
             <p className="font-mono text-sm text-white mb-3">
               {friendChallenge.fromAvatar} {friendChallenge.from} challenges you!
@@ -755,14 +757,13 @@ export default function Game() {
             className="absolute inset-0 z-50 flex items-center justify-center bg-heisenberg-bg/90 backdrop-blur-md">
             <motion.div initial={{ scale: 0.8, y: 30 }} animate={{ scale: 1, y: 0 }}
               className="glass-card p-10 rounded-3xl text-center max-w-sm w-full mx-4"
-              style={{ boxShadow: tournamentEnd.winner === myPos ? '0 0 80px #ffd70022' : '0 0 40px #ff335511' }}>
+              style={{ boxShadow: tournamentEnd.winner === myPos ? '0 0 80px #fbbf2422' : '0 0 40px #ef444411' }}>
 
               <div className="text-6xl mb-4">{tournamentEnd.winner === myPos ? '🏆' : '💀'}</div>
 
               {tournamentEnd.winner === myPos ? (
                 <>
-                  <h2 className="font-display text-3xl font-black mb-2"
-                    style={{ color: '#ffd700', textShadow: '0 0 20px #ffd700' }}>WINNER!</h2>
+                  <h2 className="font-display text-3xl font-black mb-2 !text-white" style={{}}>WINNER!</h2>
                   <p className="text-heisenberg-muted mb-2">
                     {isAiGame ? `You beat ${aiName}!` : 'You dominated the table'}
                   </p>
@@ -794,7 +795,7 @@ export default function Game() {
               )}
 
               <div className="flex gap-3 mt-4">
-                <button onClick={() => navigate('/')} className="flex-1 btn-ghost text-sm py-2.5">
+                <button onClick={() => navigate('/play')} className="flex-1 btn-ghost text-sm py-2.5">
                   Lobby
                 </button>
                 {isAiGame ? (
@@ -804,13 +805,13 @@ export default function Game() {
                         const res = await fetch('/api/tournament/join-ai', { method: 'POST', credentials: 'include' });
                         const data = await res.json();
                         if (data.tournament?.id) navigate(`/game/${data.tournament.id}`);
-                      } catch { navigate('/'); }
+                      } catch { navigate('/play'); }
                     }}
                     className="flex-1 btn-primary text-sm py-2.5">
                     Rematch
                   </button>
                 ) : (
-                  <button onClick={() => navigate('/')} className="flex-1 btn-primary text-sm py-2.5">
+                  <button onClick={() => navigate('/play')} className="flex-1 btn-primary text-sm py-2.5">
                     Play Again
                   </button>
                 )}
@@ -827,7 +828,7 @@ export default function Game() {
             className="absolute inset-0 z-50 flex items-center justify-center bg-heisenberg-bg/90 backdrop-blur-md">
             <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
               className="glass-card p-8 rounded-2xl text-center max-w-sm mx-4"
-              style={{ border: '1px solid #ff335544' }}>
+              style={{ border: '1px solid #ef444444' }}>
               <div className="text-5xl mb-4">⚠️</div>
               <h3 className="font-display text-xl font-black text-heisenberg-red mb-2">LEAVE TABLE?</h3>
               <p className="text-heisenberg-muted font-mono text-sm mb-6">
@@ -837,7 +838,7 @@ export default function Game() {
                 <button onClick={() => setShowExitWarning(false)} className="flex-1 btn-neon text-sm py-2.5">
                   Stay
                 </button>
-                <button onClick={() => navigate('/')} className="flex-1 btn-ghost text-sm py-2.5 border-heisenberg-red/40 text-heisenberg-red hover:text-heisenberg-red">
+                <button onClick={() => navigate('/play')} className="flex-1 btn-ghost text-sm py-2.5 border-heisenberg-red/40 text-heisenberg-red hover:text-heisenberg-red">
                   Leave Anyway
                 </button>
               </div>

@@ -39,13 +39,11 @@ export function PlayingCard({ card, hidden = false, small = false, delay = 0, fo
         transition={{ delay, duration: 0.4, ease: 'easeOut' }}
         className={`${sizeClass} rounded-xl flex items-center justify-center`}
         style={{
-          background: 'linear-gradient(135deg, #1a1a3e 0%, #0d0d2e 100%)',
-          border: '2px solid #00d4ff33',
-          boxShadow: '0 4px 20px #00000066, inset 0 0 20px #00d4ff11',
+          background: '#101012 url(/card-back.png) center / cover no-repeat',
+          border: '1px solid rgba(247,147,26,0.35)',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
         }}
-      >
-        <div className="text-heisenberg-neon/20 font-display text-3xl">?</div>
-      </motion.div>
+      />
     );
   }
 
@@ -98,10 +96,9 @@ export function CardBack({ small = false, delay = 0 }) {
       transition={{ delay, duration: 0.3 }}
       className={`${small ? SIZE_CLASS.small : SIZE_CLASS.normal} rounded-xl`}
       style={{
-        background: 'linear-gradient(135deg, #1e1e4e, #0a0a2e)',
-        border: '2px solid #00d4ff22',
-        boxShadow: '0 4px 15px #00000055',
-        backgroundImage: 'repeating-linear-gradient(45deg, #00d4ff08 0px, #00d4ff08 1px, transparent 1px, transparent 10px)',
+        background: '#101012 url(/card-back.png) center / cover no-repeat',
+        border: '1px solid rgba(247,147,26,0.3)',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.45)',
       }}
     />
   );

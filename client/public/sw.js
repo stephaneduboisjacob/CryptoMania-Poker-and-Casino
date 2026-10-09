@@ -7,8 +7,8 @@ self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(data.title || 'Heisenberg Rooms', {
       body: data.body || '',
-      icon: '/heisenberg-lobby.png',
-      badge: '/heisenberg-lobby.png',
+      icon: '/app-icon.png',
+      badge: '/app-icon.png',
       data: data.data || {},
       vibrate: [200, 100, 200],
     })

@@ -26,7 +26,7 @@ export default function SessionStats({ stats }) {
              net < 0 ? <TrendingDown size={12} className="text-heisenberg-red" /> :
              <Minus size={12} className="text-heisenberg-muted" />}
             <p className="font-mono font-bold text-sm" style={{
-              color: net > 0 ? '#00ff88' : net < 0 ? '#ff3355' : '#6b6b9a'
+              color: net > 0 ? '#22c55e' : net < 0 ? '#ef4444' : '#96897a'
             }}>
               {net > 0 ? '+' : ''}{net.toLocaleString()}
             </p>

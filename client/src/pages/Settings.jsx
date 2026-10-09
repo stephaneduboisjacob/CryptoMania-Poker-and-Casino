@@ -67,7 +67,7 @@ export default function Settings() {
       <div className="page-scroll">
       <div className="container mx-auto px-4 py-6 max-w-3xl">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate('/')} className="text-heisenberg-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-heisenberg-card/60">
+          <button onClick={() => navigate('/play')} className="text-heisenberg-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-heisenberg-card/60">
             <ArrowLeft size={18} />
           </button>
           <h1 className="font-display text-2xl font-black tracking-widest text-heisenberg-neon">SETTINGS</h1>
@@ -80,9 +80,9 @@ export default function Settings() {
               <button key={t.id} onClick={() => setTab(t.id)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl font-display text-xs tracking-widest uppercase font-semibold transition-all"
                 style={{
-                  background: tab === t.id ? 'rgba(0,212,255,0.15)' : 'rgba(255,255,255,0.04)',
-                  border: `1px solid ${tab === t.id ? '#00d4ff44' : '#1e1e3a'}`,
-                  color: tab === t.id ? '#00d4ff' : '#6b6b9a',
+                  background: tab === t.id ? 'rgba(247,147,26,0.15)' : 'rgba(255,255,255,0.04)',
+                  border: `1px solid ${tab === t.id ? '#f7931a44' : '#2b241a'}`,
+                  color: tab === t.id ? '#f7931a' : '#96897a',
                 }}>
                 <Icon size={13} /> {t.label}
               </button>
@@ -113,9 +113,9 @@ export default function Settings() {
                     <button key={String(v)} onClick={() => set('four_color_deck', v)}
                       className="flex-1 py-3 rounded-xl font-display text-xs tracking-widest uppercase font-semibold transition-all"
                       style={{
-                        background: prefs.four_color_deck === v ? 'rgba(0,212,255,0.15)' : 'rgba(255,255,255,0.04)',
-                        border: `1px solid ${prefs.four_color_deck === v ? '#00d4ff44' : '#1e1e3a'}`,
-                        color: prefs.four_color_deck === v ? '#00d4ff' : '#6b6b9a',
+                        background: prefs.four_color_deck === v ? 'rgba(247,147,26,0.15)' : 'rgba(255,255,255,0.04)',
+                        border: `1px solid ${prefs.four_color_deck === v ? '#f7931a44' : '#2b241a'}`,
+                        color: prefs.four_color_deck === v ? '#f7931a' : '#96897a',
                       }}>
                       {v ? '4 Colors' : '2 Colors (Classic)'}
                     </button>
@@ -142,9 +142,9 @@ export default function Settings() {
                     <button key={String(v)} onClick={() => set('sound_enabled', v)}
                       className="flex-1 py-3 rounded-xl font-display text-xs tracking-widest uppercase font-semibold transition-all flex items-center justify-center gap-2"
                       style={{
-                        background: prefs.sound_enabled === v ? 'rgba(0,212,255,0.15)' : 'rgba(255,255,255,0.04)',
-                        border: `1px solid ${prefs.sound_enabled === v ? '#00d4ff44' : '#1e1e3a'}`,
-                        color: prefs.sound_enabled === v ? '#00d4ff' : '#6b6b9a',
+                        background: prefs.sound_enabled === v ? 'rgba(247,147,26,0.15)' : 'rgba(255,255,255,0.04)',
+                        border: `1px solid ${prefs.sound_enabled === v ? '#f7931a44' : '#2b241a'}`,
+                        color: prefs.sound_enabled === v ? '#f7931a' : '#96897a',
                       }}>
                       {v ? <Volume2 size={13} /> : <VolumeX size={13} />}
                       {v ? 'Enabled' : 'Disabled'}
@@ -224,7 +224,7 @@ export default function Settings() {
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl" style={{ background: 'rgba(255,51,85,0.06)', border: '1px solid #ff335522' }}>
+                  <div className="p-4 rounded-xl" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid #ef444422' }}>
                     <p className="text-heisenberg-red text-xs font-mono font-bold mb-1">Need help?</p>
                     <p className="text-heisenberg-muted text-xs font-mono">
                       If gambling is affecting your life, please visit{' '}

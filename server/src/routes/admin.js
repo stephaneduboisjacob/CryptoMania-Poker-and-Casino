@@ -2,7 +2,12 @@ const router = require('express').Router();
 const pool = require('../db');
 const { authenticate, requireAdmin } = require('../middleware/auth');
 
-router.use(authenticate, requireAdmin);
+router.use((req, res, next) => {
+  // Public read for the lobby's AI banner (name/emoji only); everything else admin-only
+  if (req.method === 'GET' && req.path === '/ai-settings') return next();
+  return requireAdmin(req, res, next);
+});
+router.use(authenticate);
 
 // Dashboard stats
 router.get('/stats', async (req, res) => {

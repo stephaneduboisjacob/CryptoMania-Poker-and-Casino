@@ -18,3 +18,10 @@ export function balanceUsd(btc, btcPrice) {
   const usd = btcToUsd(btc, btcPrice);
   return usd != null ? fmtUsd(usd) : null;
 }
+
+export function formatCasinoBalance(user, currency) {
+  if (currency === 'btc') {
+    return `${Number(user?.balanceBtc || 0).toFixed(8)} BTC`;
+  }
+  return Number(user?.balancePlay || 0).toLocaleString();
+}

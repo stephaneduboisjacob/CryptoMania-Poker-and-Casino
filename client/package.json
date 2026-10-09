@@ -7,9 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "cap:sync": "cap sync android",
-    "cap:build": "vite build && cap sync android",
-    "cap:open": "cap open android"
+    "android:debug": "cd android && ./gradlew assembleDebug",
+    "android:release": "cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",

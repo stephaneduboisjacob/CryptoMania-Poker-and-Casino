@@ -33,7 +33,7 @@ export default function PlayerNotes({ username }) {
     <div className="relative">
       <button onClick={() => setOpen(o => !o)}
         className="p-1.5 rounded-lg transition-colors"
-        style={{ color: saved ? '#ffd700' : '#6b6b9a' }}
+        style={{ color: saved ? '#fbbf24' : '#96897a' }}
         title="Player notes">
         <StickyNote size={13} />
       </button>
@@ -45,7 +45,7 @@ export default function PlayerNotes({ username }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
             className="absolute bottom-full right-0 mb-2 w-64 glass-card p-3 rounded-xl shadow-2xl z-50"
-            style={{ border: '1px solid #ffd70033' }}>
+            style={{ border: '1px solid #fbbf2433' }}>
             <div className="flex items-center justify-between mb-2">
               <p className="font-display text-[10px] tracking-widest uppercase text-heisenberg-gold">
                 Note on {username}

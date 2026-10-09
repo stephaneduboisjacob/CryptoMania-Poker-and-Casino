@@ -15,7 +15,8 @@ const app = express();
 const server = http.createServer(app);
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'https://poker.btcpay.exchange',
+  process.env.FRONTEND_URL || 'http://localhost:5173',
+  'http://127.0.0.1:5173',
   'https://localhost',
   'capacitor://localhost',
 ];
@@ -27,6 +28,7 @@ const io = new Server(server, {
   },
   transports: ['websocket', 'polling'],
 });
+app.set('io', io);
 
 // Trust proxy (nginx)
 app.set('trust proxy', 1);
@@ -42,14 +44,14 @@ app.use(cors({
   credentials: true,
 }));
 
-// Raw body for webhook signature verification
+// Raw body for webhook signature verification (exact bytes, HMAC must match BTCPay's payload)
 app.use((req, res, next) => {
   if (req.path === '/api/btcpay/webhook') {
-    let raw = '';
-    req.on('data', chunk => raw += chunk);
+    const chunks = [];
+    req.on('data', chunk => chunks.push(chunk));
     req.on('end', () => {
-      req.rawBody = raw;
-      try { req.body = JSON.parse(raw); } catch { req.body = {}; }
+      req.rawBody = Buffer.concat(chunks);
+      try { req.body = JSON.parse(req.rawBody); } catch { req.body = {}; }
       next();
     });
   } else {
@@ -65,11 +67,19 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(cookieParser());
 
-// Rate limiting
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true });
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20 });
-app.use('/api/', limiter);
-app.use('/api/auth/', authLimiter);
+// Rate limiting — strict where it matters (credential brute force),
+// generous everywhere else so normal play and session checks never trip it.
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, max: 1000, standardHeaders: true,
+  message: { error: 'Too many requests — slow down a moment' },
+});
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, max: 30, standardHeaders: true,
+  message: { error: 'Too many login attempts — try again in a few minutes' },
+});
+app.use('/api/', apiLimiter);
+app.use('/api/auth/login', loginLimiter);
+app.use('/api/auth/register', loginLimiter);
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -80,10 +90,27 @@ app.use('/api/prices', require('./routes/prices'));
 app.use('/api/stats', require('./routes/stats'));
 app.use('/api/social', require('./routes/social'));
 app.use('/api/preferences', require('./routes/preferences'));
+app.use('/api/support', require('./routes/support'));
 
 // Tournament routes (need io instance)
 const tournamentRouter = require('./routes/tournament');
 app.use('/api/tournament', tournamentRouter(io));
+
+// Casino (multi-table poker) — manager boots on first use
+const { GameManager } = require('./poker/manager');
+const casinoManager = new GameManager(io);
+casinoManager.init().catch(e => console.error('[casino] init failed:', e));
+app.use('/api/poker', require('./routes/poker')(io, casinoManager));
+
+// Casino sockets (table rooms, actions, chat)
+require('./socket/casino')(io, casinoManager);
+
+// House games (blackjack + roulette) — dealer is the casino
+const { HouseManager } = require('./house/manager');
+const houseManager = new HouseManager(io);
+houseManager.init().catch(e => console.error('[house] init failed:', e));
+app.use('/api/house', require('./house/routes')(houseManager));
+require('./socket/house')(io, houseManager);
 
 // Online players (needs io, wired after socket setup below)
 app.get('/api/online', (req, res) => {

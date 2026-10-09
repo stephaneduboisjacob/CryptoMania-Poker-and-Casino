@@ -56,7 +56,7 @@ export default function Chat({ socket, tournamentId, username }) {
                 >
                   <span
                     className="font-semibold mr-1"
-                    style={{ color: msg.username === username ? '#00d4ff' : '#ff6b00' }}
+                    style={{ color: msg.username === username ? '#f7931a' : '#ffb020' }}
                   >
                     {msg.username}:
                   </span>

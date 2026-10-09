@@ -5,7 +5,7 @@ const webpush = require('web-push');
 
 if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
   webpush.setVapidDetails(
-    process.env.VAPID_EMAIL || 'mailto:admin@heisenberg.poker',
+    process.env.VAPID_EMAIL || 'mailto:jacobstephane@outlook.com',
     process.env.VAPID_PUBLIC_KEY,
     process.env.VAPID_PRIVATE_KEY
   );
@@ -40,6 +40,18 @@ router.get('/', async (req, res) => {
 
 router.put('/', async (req, res) => {
   const { avatar, four_color_deck, sound_enabled, sound_volume, deposit_limit_btc, session_limit_minutes } = req.body;
+  const parsedDepositLimit = deposit_limit_btc == null || deposit_limit_btc === '' ? null : Number(deposit_limit_btc);
+  const parsedSessionLimit = session_limit_minutes == null || session_limit_minutes === '' ? null : Number(session_limit_minutes);
+  const parsedVolume = sound_volume == null ? null : Number(sound_volume);
+  if (parsedDepositLimit !== null && (!Number.isFinite(parsedDepositLimit) || parsedDepositLimit < 0 || parsedDepositLimit > 21000000)) {
+    return res.status(400).json({ error: 'Daily deposit limit must be between 0 and 21,000,000 BTC' });
+  }
+  if (parsedSessionLimit !== null && (!Number.isInteger(parsedSessionLimit) || parsedSessionLimit < 1 || parsedSessionLimit > 1440)) {
+    return res.status(400).json({ error: 'Session reminder must be between 1 and 1,440 minutes' });
+  }
+  if (parsedVolume !== null && (!Number.isInteger(parsedVolume) || parsedVolume < 0 || parsedVolume > 100)) {
+    return res.status(400).json({ error: 'Sound volume must be between 0 and 100' });
+  }
   try {
     await pool.query(`
       INSERT INTO user_preferences(user_id, avatar, four_color_deck, sound_enabled, sound_volume, deposit_limit_btc, session_limit_minutes, updated_at)
@@ -52,7 +64,7 @@ router.put('/', async (req, res) => {
         deposit_limit_btc = $6,
         session_limit_minutes = $7,
         updated_at = NOW()
-    `, [req.user.id, avatar, four_color_deck, sound_enabled, sound_volume, deposit_limit_btc || null, session_limit_minutes || null]);
+    `, [req.user.id, avatar, four_color_deck, sound_enabled, parsedVolume, parsedDepositLimit, parsedSessionLimit]);
     res.json({ ok: true });
   } catch (err) {
     console.error(err);

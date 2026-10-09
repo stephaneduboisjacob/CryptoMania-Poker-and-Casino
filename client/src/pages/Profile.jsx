@@ -9,7 +9,7 @@ import { Trophy, TrendingUp, Zap, Target, Calendar, UserPlus, UserCheck, UserX, 
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
-function StatBox({ icon: Icon, label, value, sub, color = '#00d4ff' }) {
+function StatBox({ icon: Icon, label, value, sub, color = '#f7931a' }) {
   return (
     <div className="glass-card p-4 rounded-xl">
       <div className="flex items-center gap-2 mb-1">
@@ -22,7 +22,7 @@ function StatBox({ icon: Icon, label, value, sub, color = '#00d4ff' }) {
   );
 }
 
-const TIER_COLORS = { play:'#6b6b9a','0.00001':'#22d3ee','0.0001':'#00d4ff','0.001':'#38bdf8','0.01':'#ff6b00','0.1':'#ffd700' };
+const TIER_COLORS = { play:'#96897a','0.00001':'#22d3ee','0.0001':'#f7931a','0.001':'#38bdf8','0.01':'#ffb020','0.1':'#fbbf24' };
 
 function NotePanel({ username }) {
   const [open, setOpen] = useState(false);
@@ -39,14 +39,14 @@ function NotePanel({ username }) {
     <div className="relative">
       <button onClick={() => setOpen(o => !o)}
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-display tracking-widest uppercase transition-all"
-        style={{ background: 'rgba(255,215,0,0.08)', border: '1px solid #ffd70022', color: '#ffd700' }}>
+        style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid #fbbf2422', color: '#fbbf24' }}>
         <StickyNote size={12} /> Note
       </button>
       <AnimatePresence>
         {open && (
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
             className="absolute right-0 top-full mt-2 w-64 glass-card p-3 rounded-xl z-20"
-            style={{ border: '1px solid #ffd70033' }}>
+            style={{ border: '1px solid #fbbf2433' }}>
             <textarea className="w-full input-field text-xs resize-none mb-2" rows={4}
               placeholder="Private note..." value={note} onChange={e => setNote(e.target.value)} maxLength={500} />
             <div className="flex gap-2">
@@ -142,7 +142,7 @@ export default function Profile() {
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl"
-                style={{ background: 'linear-gradient(135deg, #00d4ff15, #ff6b0015)', border: '1px solid #00d4ff22' }}>
+                style={{ background: 'linear-gradient(135deg, #f7931a15, #ffb02015)', border: '1px solid #f7931a22' }}>
                 {isMe ? avatar : (profile.avatar || profile.username[0].toUpperCase())}
               </div>
               <div>
@@ -162,7 +162,7 @@ export default function Profile() {
                   {friendStatus === null && (
                     <button onClick={addFriend}
                       className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-display text-xs tracking-widest uppercase transition-all"
-                      style={{ background: 'rgba(0,212,255,0.12)', border: '1px solid #00d4ff33', color: '#00d4ff' }}>
+                      style={{ background: 'rgba(247,147,26,0.12)', border: '1px solid #f7931a33', color: '#f7931a' }}>
                       <UserPlus size={13} /> Add Friend
                     </button>
                   )}
@@ -174,7 +174,7 @@ export default function Profile() {
                   {friendStatus === 'received' && (
                     <button onClick={acceptFriend}
                       className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-display text-xs tracking-widest uppercase transition-all"
-                      style={{ background: 'rgba(0,255,136,0.12)', border: '1px solid #00ff8833', color: '#00ff88' }}>
+                      style={{ background: 'rgba(0,255,136,0.12)', border: '1px solid #22c55e33', color: '#22c55e' }}>
                       <Check size={13} /> Accept Friend Request
                     </button>
                   )}
@@ -182,7 +182,7 @@ export default function Profile() {
                     <>
                       <button onClick={challenge}
                         className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-display text-xs tracking-widest uppercase transition-all"
-                        style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid #8b5cf644', color: '#8b5cf6' }}>
+                        style={{ background: 'rgba(96,165,250,0.15)', border: '1px solid #60a5fa44', color: '#60a5fa' }}>
                         <Swords size={13} /> Challenge
                       </button>
                       <button onClick={removeFriend} className="p-2 rounded-xl text-heisenberg-muted hover:text-heisenberg-red transition-colors">
@@ -201,16 +201,16 @@ export default function Profile() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           <StatBox icon={Trophy} label="Win Rate" value={`${profile.winRate}%`}
-            sub={`${profile.wins}W / ${profile.losses}L`} color="#ffd700" />
+            sub={`${profile.wins}W / ${profile.losses}L`} color="#fbbf24" />
           <StatBox icon={Target} label="Games" value={profile.games}
-            sub={`${profile.handsPlayed} hands`} color="#00d4ff" />
+            sub={`${profile.handsPlayed} hands`} color="#f7931a" />
           <StatBox icon={TrendingUp} label="Profit"
             value={profitUsd != null ? `${parseFloat(profitUsd) >= 0 ? '+' : ''}$${Math.abs(parseFloat(profitUsd)).toFixed(2)}` : `${parseFloat(profile.profit) >= 0 ? '+' : ''}${parseFloat(profile.profit).toFixed(6)} BTC`}
             sub={profitUsd != null ? `₿ ${parseFloat(profile.profit) >= 0 ? '+' : ''}${parseFloat(profile.profit).toFixed(6)}` : undefined}
-            color={parseFloat(profile.profit) >= 0 ? '#00ff88' : '#ff3355'} />
+            color={parseFloat(profile.profit) >= 0 ? '#22c55e' : '#ef4444'} />
           <StatBox icon={Zap} label="Biggest Pot"
             value={profile.biggestPot > 0 ? profile.biggestPot.toLocaleString() : '—'}
-            sub="chips" color="#ff6b00" />
+            sub="chips" color="#ffb020" />
         </motion.div>
 
         {/* vs Heisenberg */}
@@ -271,7 +271,7 @@ export default function Profile() {
                       <History size={13} />
                     </button>
                   )}
-                  <div className="w-2 h-2 rounded-full" style={{ background: TIER_COLORS[g.tier] || '#6b6b9a' }} />
+                  <div className="w-2 h-2 rounded-full" style={{ background: TIER_COLORS[g.tier] || '#96897a' }} />
                 </div>
               </div>
             ))}
@@ -279,7 +279,7 @@ export default function Profile() {
         </motion.div>
 
         <div className="mt-6 text-center">
-          <Link to="/" className="btn-ghost text-sm py-2 px-6">← Back to Lobby</Link>
+          <Link to="/play" className="btn-ghost text-sm py-2 px-6">← Back to Lobby</Link>
         </div>
       </div>
 
@@ -308,7 +308,7 @@ function HandHistoryReplayModal({ hands, tournament, onClose }) {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-heisenberg-bg/90 backdrop-blur-md p-4">
       <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
-        className="glass-card p-5 rounded-2xl w-full max-w-lg" style={{ border: '1px solid #00d4ff22' }}>
+        className="glass-card p-5 rounded-2xl w-full max-w-lg" style={{ border: '1px solid #f7931a22' }}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <button onClick={() => setHandIdx(h => Math.max(0, h - 1))} disabled={handIdx === 0}

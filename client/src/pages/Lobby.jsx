@@ -6,19 +6,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { io } from 'socket.io-client';
 import { useAuth } from '../context/AuthContext';
 import { isNative, getToken } from '../utils/tokenStorage';
-import Navbar from '../components/Navbar';
 import LobbyChat from '../components/LobbyChat';
-import { Swords, Users, Zap, Trophy, Circle, UserCircle2, HelpCircle, Settings, Users2 } from 'lucide-react';
+import Navbar from '../components/Navbar';
+import { Swords, Users, Zap, Trophy, Circle, UserCircle2, HelpCircle, Settings, Users2, Spade, Bitcoin, ArrowRight, Sparkles } from 'lucide-react';
 import { btcToUsd, fmtUsd } from '../utils/usd';
 
 const RAKE = 0.05;
 const TIERS = [
-  { id: 'play', label: 'FREE PLAY', usd: 0,   color: '#6b6b9a', glow: '#6b6b9a44' },
+  { id: 'play', label: 'FREE PLAY', usd: 0,   color: '#96897a', glow: '#96897a44' },
   { id: '20',   label: '$20',       usd: 20,  color: '#22d3ee', glow: '#22d3ee33' },
-  { id: '50',   label: '$50',       usd: 50,  color: '#00d4ff', glow: '#00d4ff33' },
+  { id: '50',   label: '$50',       usd: 50,  color: '#f7931a', glow: '#f7931a33' },
   { id: '100',  label: '$100',      usd: 100, color: '#38bdf8', glow: '#38bdf833' },
-  { id: '250',  label: '$250',      usd: 250, color: '#ff6b00', glow: '#ff6b0033' },
-  { id: '500',  label: '$500',      usd: 500, color: '#ffd700', glow: '#ffd70033' },
+  { id: '250',  label: '$250',      usd: 250, color: '#ffb020', glow: '#ffb02033' },
+  { id: '500',  label: '$500',      usd: 500, color: '#fbbf24', glow: '#fbbf2433' },
 ];
 
 export default function Lobby() {
@@ -49,13 +49,15 @@ export default function Lobby() {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
     fetchAll();
     const id = setInterval(fetchAll, 6000);
 
     const connectSocket = async () => {
-      const socketUrl = isNative() ? 'https://poker.btcpay.exchange' : '/';
+      const socketUrl = isNative() ? (import.meta.env.VITE_SOCKET_URL || 'http://10.0.2.2:3001') : '/';
       const socketOpts = { transports: ['websocket', 'polling'] };
       const token = await getToken();
+      if (cancelled) return;
       if (token) socketOpts.auth = { token };
       const sock = io(socketUrl, socketOpts);
       socketRef.current = sock;
@@ -71,7 +73,7 @@ export default function Lobby() {
     };
     connectSocket();
 
-    return () => { clearInterval(id); if (socketRef.current) socketRef.current.disconnect(); };
+    return () => { cancelled = true; clearInterval(id); if (socketRef.current) socketRef.current.disconnect(); };
   }, [fetchAll]);
 
   const joinHuman = async (tier) => {
@@ -103,35 +105,39 @@ export default function Lobby() {
   const activeGames = lobbies.filter(l => l.status === 'active');
 
   return (
-    <div className="page-root" style={{ backgroundImage: 'url(/background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="page-root" style={{ backgroundImage: 'url(/login-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(9,9,11,0.5) 0%, rgba(9,9,11,0.62) 100%)' }} />
       <Navbar btcPrice={btcPrice} />
+      <div className="page-scroll relative z-10">
+        <main className="container mx-auto px-4 pt-5 pb-8 max-w-7xl">
 
-      <div className="page-scroll">
-        <main className="container mx-auto px-4 py-6 max-w-6xl">
-
-          {/* Hero */}
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4 md:mb-8">
-            <h1 className="font-display text-3xl md:text-7xl font-black tracking-widest mb-1"
-              style={{ color: '#00d4ff', textShadow: '0 0 30px #00d4ff, 0 0 60px #00d4ff44' }}>
-              HEISENBERG
-            </h1>
-            <p className="font-display text-lg tracking-[0.5em] text-heisenberg-orange font-semibold mb-1">ROOMS</p>
-            <p className="text-heisenberg-muted text-xs tracking-widest uppercase font-mono">
-              Heads-Up Only · Bitcoin Poker · No Limit Texas Hold'em
-            </p>
-            {btcPrice && (
-              <p className="text-heisenberg-muted/60 text-xs font-mono mt-1">
-                1 BTC = <span className="text-heisenberg-gold">${btcPrice.toLocaleString()}</span> USD
-              </p>
-            )}
-          </motion.div>
+          <motion.section initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, ease: 'easeOut' }}
+            className="lobby-hero mb-6" style={{ backgroundImage: 'url(/banner-poker.webp)' }}>
+            <div className="lobby-hero__content">
+              <div>
+                <div className="lobby-hero__eyebrow"><Sparkles size={12} /> CRYPTOMANIA PRIVATE CLUB <span className="opacity-35">/</span> YOUR NEXT HAND STARTS HERE</div>
+                <h1 className="lobby-hero__title">Find your table.<br /><em>Make your move.</em></h1>
+                <p className="lobby-hero__copy">Settle into a live poker room, explore the casino, or sharpen your game in free practice.</p>
+                <div className="crypto-acceptance mt-4"><Bitcoin size={14} /> 2,000+ cryptocurrencies accepted · not just Bitcoin</div>
+              </div>
+              <div className="lobby-hero__actions">
+                <button onClick={joinAI} disabled={Boolean(joining)} className="btn-primary inline-flex items-center gap-2">
+                  <Spade size={14} /> {joining === 'ai' ? 'Opening practice table…' : 'Practice for free'} <ArrowRight size={14} />
+                </button>
+                <button onClick={() => navigate('/casino')} className="btn-ghost inline-flex items-center gap-2">
+                  Explore casino <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+          </motion.section>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
 
               {/* Balance bar */}
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
-                className="glass-card p-4 rounded-xl flex flex-wrap items-center justify-between gap-4">
+                className="glass-card p-4 sm:p-5 rounded-2xl flex flex-wrap items-center justify-between gap-4"
+                style={{ borderColor: 'rgba(224,190,121,.18)' }}>
                 <div className="flex items-center gap-6">
                   <div>
                     <p className="text-heisenberg-muted text-xs font-display tracking-widest uppercase">Balance</p>
@@ -150,8 +156,39 @@ export default function Lobby() {
                   <Link to="/profile" className="btn-ghost text-xs py-2 px-3 flex items-center gap-1">
                     <UserCircle2 size={13} /> Profile
                   </Link>
-                  <button onClick={() => navigate('/wallet')} className="btn-neon text-xs py-2 px-4">
-                    Deposit / Withdraw
+                  <button onClick={() => navigate('/wallet')} className="btn-primary text-xs py-2 px-4">
+                    Wallet
+                  </button>
+                </div>
+              </motion.div>
+
+              {/* Casino banner */}
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
+                className="glass-card rounded-2xl overflow-hidden cursor-pointer group relative"
+                style={{ border: '1px solid #fbbf2444', boxShadow: '0 0 30px #fbbf2418' }}
+                onClick={() => navigate('/casino')}>
+                <div className="h-1" style={{ background: 'linear-gradient(90deg, #fbbf24, #ffb020)' }} />
+                <div className="p-5 flex items-center justify-between relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
+                    style={{ backgroundImage: 'url(/btc-coin.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                  <div className="flex items-center gap-4 relative">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                      style={{ background: 'rgba(251,191,36,0.15)', border: '1px solid #fbbf2444' }}>
+                      <Spade size={22} className="text-heisenberg-gold" />
+                    </div>
+                    <div>
+                      <p className="font-display font-bold text-base tracking-widest text-white">
+                        ENTER THE CASINO
+                        <span className="text-heisenberg-gold ml-2 text-xs">NEW</span>
+                      </p>
+                      <p className="text-heisenberg-muted text-xs mt-0.5">
+                        Cash Games · Sit & Go · Multi-Table Tournaments · Freerolls
+                      </p>
+                    </div>
+                  </div>
+                  <button className="relative flex items-center gap-2 font-display font-bold text-sm tracking-widest uppercase px-5 py-2.5 rounded-xl transition-all"
+                    style={{ background: 'rgba(251,191,36,0.2)', border: '1px solid #fbbf2466', color: '#fbbf24' }}>
+                    Play
                   </button>
                 </div>
               </motion.div>
@@ -159,13 +196,13 @@ export default function Lobby() {
               {/* Play vs opponent banner */}
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
                 className="glass-card rounded-2xl overflow-hidden cursor-pointer group"
-                style={{ border: '1px solid #8b5cf644', boxShadow: '0 0 30px #8b5cf622' }}
+                style={{ border: '1px solid #60a5fa44', boxShadow: '0 0 30px #60a5fa22' }}
                 onClick={() => !joining && joinAI()}>
-                <div className="h-1" style={{ background: 'linear-gradient(90deg, #8b5cf6, #00d4ff)' }} />
+                <div className="h-1" style={{ background: 'linear-gradient(90deg, #60a5fa, #f7931a)' }} />
                 <div className="p-5 flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
-                      style={{ background: 'rgba(139,92,246,0.2)', border: '1px solid #8b5cf644' }}>
+                      style={{ background: 'rgba(96,165,250,0.2)', border: '1px solid #60a5fa44' }}>
                       <Swords size={22} className="text-heisenberg-purple" />
                     </div>
                     <div>
@@ -179,7 +216,7 @@ export default function Lobby() {
                   </div>
                   <button
                     className="flex items-center gap-2 font-display font-bold text-sm tracking-widest uppercase px-5 py-2.5 rounded-xl transition-all"
-                    style={{ background: 'rgba(139,92,246,0.25)', border: '1px solid #8b5cf666', color: '#8b5cf6' }}>
+                    style={{ background: 'rgba(96,165,250,0.25)', border: '1px solid #60a5fa66', color: '#60a5fa' }}>
                     {joining === 'ai'
                       ? <><div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />Starting...</>
                       : <><Zap size={14} />Play</>
@@ -359,7 +396,7 @@ export default function Lobby() {
                 <p className="font-display text-xs tracking-widest uppercase text-heisenberg-muted mb-3">About</p>
                 <div className="space-y-2 text-xs text-heisenberg-muted font-mono">
                   <p>🃏 Heads-Up No Limit Texas Hold'em exclusively</p>
-                  <p>₿ Bitcoin payments · Zero custody</p>
+                  <p>₿ Deposits accepted in 2,000+ cryptocurrencies</p>
                   <p>🎯 5% rake on all real money games</p>
                   <p>⏱ Blinds double every 5 minutes</p>
                   <p>🚀 Starting stack: 10,000 chips</p>
@@ -372,7 +409,7 @@ export default function Lobby() {
       </div>
 
       <footer className="shrink-0 flex items-center justify-between py-2 px-4 text-heisenberg-muted/60 text-xs font-mono border-t border-heisenberg-border/20 bg-heisenberg-bg/60 backdrop-blur-sm">
-        <span>Heisenberg Rooms — Heads-Up Bitcoin Poker · Fair Play · Provably Random</span>
+        <span>Cryptomania Casino — Poker & Games · Deposits accepted in 2,000+ cryptocurrencies</span>
         <LobbyChat socket={socketRef.current} username={user?.username} />
       </footer>
 
@@ -381,7 +418,7 @@ export default function Lobby() {
         {friendChallenge && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             className="fixed bottom-12 right-4 z-50 glass-card p-4 rounded-xl max-w-xs"
-            style={{ border: '1px solid #8b5cf644' }}>
+            style={{ border: '1px solid #60a5fa44' }}>
             <p className="font-display text-xs tracking-widest uppercase text-heisenberg-purple mb-2">⚔️ Challenge!</p>
             <p className="font-mono text-sm text-white mb-3">
               {friendChallenge.fromAvatar} <strong>{friendChallenge.from}</strong> challenges you to a heads-up match!

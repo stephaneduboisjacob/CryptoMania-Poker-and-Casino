@@ -1,24 +1,24 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'exchange.btcpay.poker.heisenberg',
-  appName: 'Heisenberg Rooms',
+  appId: 'buzz.cryptomania.casino',
+  appName: 'CryptoMania Casino',
   webDir: 'dist',
   server: {
     androidScheme: 'https',
-    allowNavigation: ['poker.btcpay.exchange', 'node.btcpay.exchange'],
+    allowNavigation: ['localhost', '10.0.2.2'],
   },
   plugins: {
     SplashScreen: {
       launchAutoHide: true,
-      backgroundColor: '#0a0a0f',
+      backgroundColor: '#09090b',
       showSpinner: false,
       splashFullScreen: true,
       splashImmersive: true,
     },
     StatusBar: {
       style: 'DARK',
-      backgroundColor: '#0a0a0f',
+      backgroundColor: '#09090b',
     },
   },
 };

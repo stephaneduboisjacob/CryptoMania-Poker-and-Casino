@@ -52,19 +52,19 @@ const SECTIONS = [
     ],
   },
   {
-    title: '₿ Bitcoin Payments',
+    title: '₿ Crypto Deposits & Withdrawals',
     items: [
       {
         q: 'How do I deposit?',
-        a: 'Go to Wallet → Deposit. Select an amount or enter a custom amount, then scan the QR code or open the payment link. Funds credit after 1 on-chain confirmation.',
+        a: 'Go to Wallet → Deposit and choose a USD amount. The secure BTCPay checkout supports deposits in 2,000+ cryptocurrencies; available methods are shown on the invoice page. Your balance credits after the payment is confirmed.',
       },
       {
         q: 'How long do deposits take?',
-        a: 'Typically 10–30 minutes depending on Bitcoin network congestion. Lightning Network deposits credit instantly (coming soon).',
+        a: 'Confirmation time depends on the cryptocurrency and network you choose. Follow the payment status and instructions shown on the BTCPay invoice.',
       },
       {
         q: 'How do I withdraw?',
-        a: 'Go to Wallet → Withdraw. Enter amount and your Bitcoin address. Withdrawals are processed manually — allow up to 24 hours.',
+        a: 'Go to Wallet → Withdraw. Enter an amount and your Bitcoin address. Withdrawals are currently paid out in BTC and processed manually — allow up to 24 hours.',
       },
       {
         q: 'What is the rake?',
@@ -72,7 +72,7 @@ const SECTIONS = [
       },
       {
         q: 'What is the minimum deposit?',
-        a: 'Minimum deposit is 0.00001 BTC (matching the nano tier buy-in).',
+        a: 'The minimum deposit is $5 USD equivalent. Select your payment currency and review the final amount in BTCPay checkout.',
       },
     ],
   },
@@ -172,7 +172,7 @@ export default function Help() {
       <div className="page-scroll">
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate('/')} className="text-heisenberg-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-heisenberg-card/60">
+          <button onClick={() => navigate('/play')} className="text-heisenberg-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-heisenberg-card/60">
             <ArrowLeft size={18} />
           </button>
           <div>
@@ -189,8 +189,8 @@ export default function Help() {
                 <button key={i} onClick={() => setActiveSection(i)}
                   className="w-full text-left px-3 py-2 rounded-lg text-xs font-mono transition-all"
                   style={{
-                    background: activeSection === i ? 'rgba(0,212,255,0.12)' : 'transparent',
-                    color: activeSection === i ? '#00d4ff' : '#6b6b9a',
+                    background: activeSection === i ? 'rgba(247,147,26,0.12)' : 'transparent',
+                    color: activeSection === i ? '#f7931a' : '#96897a',
                   }}>
                   {s.title}
                 </button>

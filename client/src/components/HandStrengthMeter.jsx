@@ -2,16 +2,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getHandStrength } from '../utils/handStrength';
 
 const COLORS = [
-  [0, 30,  '#ff3355'],
-  [30, 50, '#ff6b00'],
-  [50, 65, '#ffd700'],
-  [65, 80, '#00d4ff'],
-  [80, 101,'#00ff88'],
+  [0, 30,  '#ef4444'],
+  [30, 50, '#ffb020'],
+  [50, 65, '#fbbf24'],
+  [65, 80, '#f7931a'],
+  [80, 101,'#22c55e'],
 ];
 
 function getColor(pct) {
   for (const [lo, hi, c] of COLORS) if (pct >= lo && pct < hi) return c;
-  return '#00ff88';
+  return '#22c55e';
 }
 
 export default function HandStrengthMeter({ myCards, community, phase }) {

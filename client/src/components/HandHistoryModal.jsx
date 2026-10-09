@@ -82,7 +82,7 @@ export default function HandHistoryModal({ hand, p1Name, p2Name, onClose, standa
       )}
 
       <div className="text-center mb-4">
-        <p className="font-mono text-sm" style={{ color: cur.final ? '#ffd700' : '#e0e0ff' }}>{cur.desc}</p>
+        <p className="font-mono text-sm" style={{ color: cur.final ? '#fbbf24' : '#f3ede2' }}>{cur.desc}</p>
         {cur.pot > 0 && <p className="text-heisenberg-muted text-xs font-mono mt-1">Pot: {cur.pot.toLocaleString()}</p>}
       </div>
 
@@ -106,7 +106,7 @@ export default function HandHistoryModal({ hand, p1Name, p2Name, onClose, standa
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-heisenberg-bg/90 backdrop-blur-md p-4">
       <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
-        className="glass-card p-6 rounded-2xl w-full max-w-md" style={{ border: '1px solid #00d4ff22' }}>
+        className="glass-card p-6 rounded-2xl w-full max-w-md" style={{ border: '1px solid #f7931a22' }}>
         {content}
       </motion.div>
     </motion.div>

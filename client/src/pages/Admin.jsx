@@ -18,10 +18,10 @@ function StatCard({ icon: Icon, label, value, color }) {
 }
 
 const DIFFICULTY_INFO = {
-  easy:   { label: 'Easy',   color: '#00ff88', desc: 'Basic hand strength, no adaptation. Perfect for new players.' },
-  medium: { label: 'Medium', color: '#00d4ff', desc: 'Pot odds, c-bet strategy, position awareness.' },
-  hard:   { label: 'Hard',   color: '#ff6b00', desc: 'Range tracking, exploitative adjustments, multi-street planning.' },
-  insane: { label: 'Insane', color: '#ff3355', desc: 'Near-GTO. Range vs range equity, polarised rivers, ICM push/fold, alpha-balanced bluffs.' },
+  easy:   { label: 'Easy',   color: '#22c55e', desc: 'Basic hand strength, no adaptation. Perfect for new players.' },
+  medium: { label: 'Medium', color: '#f7931a', desc: 'Pot odds, c-bet strategy, position awareness.' },
+  hard:   { label: 'Hard',   color: '#ffb020', desc: 'Range tracking, exploitative adjustments, multi-street planning.' },
+  insane: { label: 'Insane', color: '#ef4444', desc: 'Near-GTO. Range vs range equity, polarised rivers, ICM push/fold, alpha-balanced bluffs.' },
 };
 
 const DELAY_INFO = {
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
   };
 
   const TABS = ['overview', 'users', 'tournaments', 'transactions', 'ai'];
-  const tierColor = { play: '#6b6b9a', '0.001': '#00d4ff', '0.01': '#ff6b00', '0.1': '#ffd700' };
+  const tierColor = { play: '#96897a', '0.001': '#f7931a', '0.01': '#ffb020', '0.1': '#fbbf24' };
 
   return (
     <div className="page-root">
@@ -157,10 +157,10 @@ export default function AdminDashboard() {
         {tab === 'overview' && stats && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              <StatCard icon={Users} label="Players" value={stats.totalUsers} color="#00d4ff" />
-              <StatCard icon={Trophy} label="Tournaments" value={stats.totalTournaments} color="#ff6b00" />
-              <StatCard icon={DollarSign} label="Revenue" value={`₿${stats.totalRevenue.toFixed(6)}`} color="#ffd700" />
-              <StatCard icon={Activity} label="Live Games" value={stats.activeTournaments} color="#00ff88" />
+              <StatCard icon={Users} label="Players" value={stats.totalUsers} color="#f7931a" />
+              <StatCard icon={Trophy} label="Tournaments" value={stats.totalTournaments} color="#ffb020" />
+              <StatCard icon={DollarSign} label="Revenue" value={`₿${stats.totalRevenue.toFixed(6)}`} color="#fbbf24" />
+              <StatCard icon={Activity} label="Live Games" value={stats.activeTournaments} color="#22c55e" />
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -236,12 +236,12 @@ export default function AdminDashboard() {
                 <div key={t.id} className="glass-card p-4 rounded-xl">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full" style={{ background: t.status === 'active' ? '#00ff88' : t.status === 'completed' ? '#6b6b9a' : '#ff6b00', boxShadow: t.status === 'active' ? '0 0 6px #00ff88' : 'none' }} />
+                      <div className="w-2 h-2 rounded-full" style={{ background: t.status === 'active' ? '#22c55e' : t.status === 'completed' ? '#96897a' : '#ffb020', boxShadow: t.status === 'active' ? '0 0 6px #22c55e' : 'none' }} />
                       <span className="font-mono text-sm">{t.p1 || '?'} <span className="text-heisenberg-muted">vs</span> {t.p2 || 'Waiting...'}</span>
                       {t.winner && <span className="text-heisenberg-gold text-xs font-mono">→ {t.winner}</span>}
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-xs font-display tracking-wider" style={{ color: tierColor[t.tier] || '#6b6b9a' }}>{t.tier === 'play' ? 'PLAY' : `${t.tier} BTC`}</span>
+                      <span className="text-xs font-display tracking-wider" style={{ color: tierColor[t.tier] || '#96897a' }}>{t.tier === 'play' ? 'PLAY' : `${t.tier} BTC`}</span>
                       <span className="text-heisenberg-muted text-xs font-mono">{new Date(t.created_at).toLocaleString()}</span>
                     </div>
                   </div>

@@ -1,17 +1,16 @@
+const path = require('node:path');
+const root = __dirname;
+
 module.exports = {
-  apps: [{
-    name: 'heisenberg-poker',
-    script: 'server/src/index.js',
-    cwd: '/home/sven/poker',
-    instances: 1,
-    autorestart: true,
-    watch: false,
-    max_memory_restart: '500M',
-    env: {
-      NODE_ENV: 'production',
+  apps: [
+    {
+      name: 'heisenberg-poker',
+      cwd: root,
+      script: path.join(root, 'server/src/index.js'),
+      env: { NODE_ENV: 'production' },
+      error_file: path.join(root, 'logs/error.log'),
+      out_file: path.join(root, 'logs/out.log'),
+      time: true,
     },
-    error_file: '/home/sven/poker/logs/error.log',
-    out_file: '/home/sven/poker/logs/out.log',
-    log_date_format: 'YYYY-MM-DD HH:mm:ss',
-  }]
+  ],
 };
