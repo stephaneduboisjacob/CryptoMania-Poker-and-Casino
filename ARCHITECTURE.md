@@ -1,4 +1,4 @@
-# Heisenberg Poker — Architecture
+# CryptoMania Poker and Casino — Architecture
 
 ## Project status
 

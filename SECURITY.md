@@ -1,6 +1,6 @@
 # Security Policy
 
-Heisenberg Poker includes account, real-time game, and payment-related code. Treat credentials, session tokens, wallet or payment data, account records, and production logs as sensitive.
+CryptoMania Poker and Casino includes account, real-time game, and payment-related code. Treat credentials, session tokens, wallet or payment data, account records, and production logs as sensitive.
 
 Do not report suspected vulnerabilities in a public issue. Contact the maintainer privately at [jacobstephane@outlook.com](mailto:jacobstephane@outlook.com) with a concise description and safe reproduction steps. Do not attach real credentials or account data.
 

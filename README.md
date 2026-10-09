@@ -1,10 +1,12 @@
-# Heisenberg Poker
+# CryptoMania Poker-and-Casino
 
 A multiplayer poker and casino-room application with a React client, Node.js API, real-time game sessions, BTCPay integration, and a Capacitor Android shell. Check out https://cryptomania.buzz for demo!
 
 ## Project status
 
-Game, account, payment, and wagering behavior needs independent security and legal review before any real-money use.
+Live Demo at: https://cryptomania.buzz
+
+This is a prototype. Game, account, payment, and wagering behavior needs independent security and legal review before any real-money use.
 
 ## Technology
 
